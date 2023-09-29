@@ -1,0 +1,20 @@
+version: '3'
+services:
+  chat-gpt-services-container:
+    build:
+      context: chat-gpt-services
+      dockerfile: ./Dockerfile.jvm
+    ports:
+      - "8080:8080"
+    restart: always
+  midjourney-ui-container:
+     image: erictik/midjourney-ui:latest
+     #build:
+      # context: midjourney-ui
+      # dockerfile: ./Dockerfile
+     #command: npm start
+     env_file:
+       - midjourney-ui/.env
+     ports:
+      - "3000:3000"
+     restart: always

@@ -10,7 +10,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>chat-gpt-services</module>
-        <module>midjourney-api</module>
     </modules>
 
     <dependencyManagement>
