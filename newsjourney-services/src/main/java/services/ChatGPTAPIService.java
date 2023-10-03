@@ -16,9 +16,9 @@ public class ChatGPTAPIService {
     private Logger logger = LoggerFactory.getLogger(ChatGPTAPIService.class);
     public String chatGPT(String text) throws Exception {
 
-        String template = "Übersetze ins Englische:%s." +
-                "Schreib nur Text, ohne quellen. " +
-                "Füge am Anfang un Ende deiner Antwort folgenden Text hinzu:_X_";
+        logger.info("received request: "+text);
+
+        String template =  "Translate to english, and append _X_ at the beginning and end of your answer. \"%s\". Dont show references.";
         String url = new URI("http",
                 "host.docker.internal:8081",
                 null, "text="+String.format(template,replaceUmlaut(text)),null).toASCIIString();
