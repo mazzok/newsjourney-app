@@ -9,7 +9,7 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>chat-gpt-services</module>
+        <module>newsjourney-services</module>
     </modules>
 
     <dependencyManagement>
@@ -35,6 +35,11 @@
                 <version>${quarkus.platform.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>jakarta.ws.rs</groupId>
+                <artifactId>jakarta.ws.rs-api</artifactId>
             </dependency>
         </dependencies>
     </dependencyManagement>

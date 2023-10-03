@@ -1,27 +1,26 @@
+package services;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import jakarta.enterprise.context.RequestScoped;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MidjourneyAPI {
+@RequestScoped
+public class MidjourneyAPIService {
 
-    private static Logger logger = LoggerFactory.getLogger(MidjourneyAPI.class);
+    private Logger logger = LoggerFactory.getLogger(MidjourneyAPIService.class);
 
-    public static String prompt(String prompt) throws Exception {
+    public String prompt(String prompt) throws Exception {
         String url = "http://host.docker.internal:3000/api/imagine/";
         HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
 
@@ -45,24 +44,5 @@ public class MidjourneyAPI {
         JsonNode tree = mapper.readTree(progressResponse.get(progressResponse.size() - 1));
 
         return tree.get("uri").asText();
-    }
-
-    private String getInfoBodyResponse(URI uri) {
-        HttpClient client = HttpClient.newBuilder().build();
-        HttpRequest request = null;
-        request = HttpRequest.newBuilder()
-                .uri(uri)
-                .GET()
-                .build();
-
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        } catch (InterruptedException e) {
-            logger.error(e.getMessage());
-        }
-        return response.body();
     }
 }
