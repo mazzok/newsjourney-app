@@ -14,18 +14,33 @@ import java.net.URL;
 public class ChatGPTAPIService {
 
     private Logger logger = LoggerFactory.getLogger(ChatGPTAPIService.class);
-    public String chatGPT(String text) throws Exception {
 
-        logger.info("received request: "+text);
+    public String chat(String content, int retryCounter) {
+        String response = "No content!";
+        boolean validAnswerReceived = false;
+        while (!validAnswerReceived && retryCounter > 0) {
+            try {
+                response = request(content);
+                validAnswerReceived = true;
+            } catch (Exception e) {
+                retryCounter--;
+                logger.info(String.format("Received %s from Chat GPT API service, trying again %s more times", e.getMessage(), retryCounter));
+            }
+        }
+    return response;
+    }
 
-        String template =  "Translate to english, and append _X_ at the beginning and end of your answer. \"%s\". Dont show references.";
+    private String request(String text) throws Exception {
+
+        logger.info("received request: " + text);
+        String template = "Translate to english, and append _X_ at the beginning and end of your answer. \"%s\". Dont show references.";
         String url = new URI("http",
                 "host.docker.internal:8081",
-                null, "text="+String.format(template,replaceUmlaut(text)),null).toASCIIString();
+                null, "text=" + String.format(template, replaceUmlaut(text)), null).toASCIIString();
         HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
         con.setRequestMethod("GET");
 
-        logger.info("Making GET request to: "+url);
+        logger.info("Making GET request to: " + url);
 
         con.setDoOutput(true);
 
