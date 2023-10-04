@@ -55,7 +55,6 @@ public class ChatGPTAPIService {
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
         String openaiKey = System.getenv("OPENAI_KEY");
-        openaiKey="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";
         con.setRequestProperty("Authorization", "Bearer "+openaiKey);
 
         ObjectMapper mapper = new ObjectMapper();
