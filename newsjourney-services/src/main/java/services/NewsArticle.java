@@ -1,12 +1,19 @@
 package services;
-import java.util.Date;
+import org.bson.types.ObjectId;
 
-public class NewsArticle {
+import java.util.Date;
+import java.util.Objects;
+
+public class NewsArticle{
     private String author;
     private String title;
     private String description;
 
     private String chatgptdescription;
+
+    private String midJourneyImageURL;
+
+    private ObjectId midjourneyMongoImageID;
     private String url;
     private String source;
     private String image;
@@ -34,6 +41,21 @@ public class NewsArticle {
                 '}';
     }
 
+    public String getMidJourneyImageURL() {
+        return midJourneyImageURL;
+    }
+
+    public void setMidJourneyImageURL(String midJourneyImageURL) {
+        this.midJourneyImageURL = midJourneyImageURL;
+    }
+
+    public ObjectId getMidjourneyMongoImageID() {
+        return midjourneyMongoImageID;
+    }
+
+    public void setMidjourneyMongoImageID(ObjectId midjourneyMongoImageID) {
+        this.midjourneyMongoImageID = midjourneyMongoImageID;
+    }
 
     public String getAuthor() {
         return author;
@@ -54,13 +76,12 @@ public class NewsArticle {
     public String getDescription() {
         return description;
     }
-
-    public String getCHatGPTDescription() {
-        return chatgptdescription;
+    public void setChatGPTdescription(String chatgptdescription) {
+        this.chatgptdescription = chatgptdescription;
     }
 
-    public void setChatgptdescription(String chatgptdescription) {
-        this.chatgptdescription = chatgptdescription;
+    public String getChatGPTdescription() {
+        return chatgptdescription;
     }
 
     public void setDescription(String description) {
@@ -121,5 +142,19 @@ public class NewsArticle {
 
     public void setPublished_at(Date published_at) {
         this.published_at = published_at;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NewsArticle newsArticle = (NewsArticle) o;
+        return published_at.equals(newsArticle.getPublished_at()) &&
+                title.equals(newsArticle.getTitle());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, published_at);
     }
 }
